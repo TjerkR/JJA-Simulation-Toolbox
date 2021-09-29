@@ -1,0 +1,4 @@
+- The voltages are now not taking into account induced voltages
+
+
+
