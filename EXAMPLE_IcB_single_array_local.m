@@ -11,6 +11,10 @@ PLOT = true;
 savedir = '.\';
 figno = 10;
 
+titlestring = "none";
+xlims = "auto";
+ylims = "auto";
+
 %% Add current folder to path, start parallel pool
 p = genpath(pwd);
 addpath(p);
@@ -101,5 +105,5 @@ end
 %% Plotting data
 
 if PLOT
-    [fig, ax] = plot_IcB(Ic_f_list, f_list, nHole_list, figno);
+    plot_IcB(Ic_f_list, f_list, nHole_list, figno, titlestring, xlims, ylims);
 end
