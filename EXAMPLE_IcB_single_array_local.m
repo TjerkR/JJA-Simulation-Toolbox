@@ -3,17 +3,19 @@
 % 29-09-2021
 % 
 % Calculates and optionally saves and plots Ic(B) for a single given array.
+close all
 clearvars
 
 SAVE = false;
 PLOT = true;
 
 savedir = '.\';
-figno = 10;
+figno1 = 10;
+figno2 = 20;
 
-titlestring = "none";
+titlestring = "I_c of a 10 by 10 array, with an 8 by 8 hole";
 xlims = "auto";
-ylims = "auto";
+ylims = [0, 0.25];
 
 %% Add current folder to path, start parallel pool
 p = genpath(pwd);
@@ -94,16 +96,13 @@ toc
 %% Saving data
 
 if SAVE
-    % savedir = '/home/s1736159/MATLAB/data/';
-%     savedir = '.\';
-
     filename = strcat(string(N),'a',string(L),'h');
-
     save(strcat(savedir, filename), 'Ic_f_max', 'Ic_f_list', 'f_list', 'nHole_list');   
 end
 
 %% Plotting data
 
 if PLOT
-    plot_IcB(Ic_f_list, f_list, nHole_list, figno, titlestring, xlims, ylims);
+    plot_IcB(Ic_f_list, f_list, nHole_list, figno1, titlestring, xlims, ylims);
+    plot_IcB_max(Ic_f_max, f_list, figno2, titlestring, xlims, ylims);
 end
