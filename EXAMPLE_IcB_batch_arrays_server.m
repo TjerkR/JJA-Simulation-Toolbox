@@ -17,8 +17,8 @@ tic
 
 %% Inputs
 
-Ls = (50:5:80)';
-Ns = Ls+5;
+Ls = (8:1:13)';
+Ns = Ls+2;
 
 A = [Ns, Ls];
 
@@ -30,9 +30,9 @@ mirroring = true;
 parQ = false;
 numcores = 4;
 
-fstart = 0;
-fstep = 1E-5;
-fstop = 1E-3;
+fstart = -10E-2;
+fstep = 5E-4;
+fstop = 10E-2;
 f_list = fstart:fstep:fstop;
 
 %% Calculations
@@ -41,7 +41,7 @@ for j = 1:length(A)
     L = A(j,2);
     fprintf('%da %dh\n\n',N,L)
     
-    nHole_list = 0:1; % this has to be inside the loop!!
+    nHole_list = 0:1:5; % this has to be inside the loop!!
 
     % Generate array geometry
     array = generate_array(N, L, hole_shape);
