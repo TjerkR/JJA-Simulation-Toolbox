@@ -37,7 +37,7 @@ f_list = fstart:fstep:fstop;
 fprintf('%da %dh\n\n',N,L)
  
 % Generate array geometry
-array = generate_array(N, L, hole_shape);
+array = generate_array(N, L, 'hole_shape', hole_shape);
 
 % Calculate Ic(B) for different number of vortices in hole
 holeNr = find(array.pathArea > 1);

@@ -44,7 +44,7 @@ for j = 1:length(A)
     nHole_list = 0:1:5; % this has to be inside the loop!!
 
     % Generate array geometry
-    array = generate_array(N, L, hole_shape);
+    array = generate_array(N, L, 'hole_shape', hole_shape);
 
     % Calculate Ic(B) for different number of vortices in hole
     holeNr = find(array.pathArea > 1); % ??? no idea

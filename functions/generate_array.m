@@ -1,20 +1,15 @@
-function array = generate_array(N, L, hole_shape, varargin)
+function array = generate_array(N, L, NameValueArgs)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
-
-Ic = 1;
-try
-    if varargin{1} == 'Ic'
-        Ic = varargin{2};
-    end
+arguments
+    N (1,1) double
+    L (1,1) double
+    NameValueArgs.hole_shape = 'square'
+    NameValueArgs.Ic = 1
 end
 
-%%%%% TEMP %%%%%%%%%%%%%%%%%%%%%%%%%
-% Nj = 2*N*(N-1);
-% variation = 0.1 * rand(Nj,1);
-% Ic = 100*ones(Nj,1) + variation;
-
-%%%%% TEMP %%%%%%%%%%%%%%%%%%%%%%%%%
+hole_shape = NameValueArgs.hole_shape;
+Ic = NameValueArgs.Ic;
 
 
 % Initialize array

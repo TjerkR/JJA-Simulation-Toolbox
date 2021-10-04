@@ -37,7 +37,7 @@ Ic = 1;
 %% Creating array
 
 % Generate geometry with hole
-array = generate_array(N, L, hole_shape, 'Ic', Ic);
+array = generate_array(N, L, 'hole_shape', hole_shape, 'Ic', Ic);
 
 %% Calculate phases in stationary state?
 
