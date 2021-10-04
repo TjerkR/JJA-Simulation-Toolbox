@@ -9,9 +9,9 @@ clearvars
 PLOT_DATA = true;
 SAVE_FIGURES = true;
 SAVE_DATA = true;
-titlestring = "I_c of a 10 by 10 array, with an 8 by 8 hole";
 filestring = "10a8h";
-xlims = "auto";
+titlestring = "I_c of a 10 by 10 array, with an 8 by 8 hole";
+% xlims = 'auto';
 ylims = [0, 0.25];
 figno1 = 10;
 figno2 = 20;
@@ -96,11 +96,11 @@ toc
 
 if PLOT_DATA
     % All curves
-    [fig1, ax1] = plot_IcB(Ic_f_list, f_list, nHole_list, figno1, titlestring, xlims, ylims);
-    
+    [fig1, ax1] = plot_IcB(Ic_f_list, f_list, nHole_list, 'figno', figno1, 'titlestring', titlestring, 'ylims', ylims);
+
     % Maximum Ic(B)
-    [fig2, ax2] = plot_IcB_max(Ic_f_max, f_list, figno2, titlestring, xlims, ylims);
-    
+    [fig2, ax2] = plot_IcB_max(Ic_f_max, f_list, 'figno', figno2, 'titlestring', titlestring, 'ylims', ylims);
+
     % Saving figures
     if SAVE_FIGURES
         if not(isfolder(".\figures\"))

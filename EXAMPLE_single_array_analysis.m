@@ -13,19 +13,19 @@ load(file);
 
 %% Plotting
 
-SAVE_FIGURES = true;
+SAVE_FIGURES = false;
 filestring = "10a8h";
 titlestring = "I_c of a 10 by 10 array, with an 8 by 8 hole";
-xlims = "auto";
+% xlims = 'auto';
 ylims = [0, 0.25];
-figno1 = 1;
-figno2 = 2;
+figno1 = 10;
+figno2 = 20;
 
 % All curves
-[fig1, ax1] = plot_IcB(Ic_f_list, f_list, nHole_list, figno1, titlestring, xlims, ylims);
+[fig1, ax1] = plot_IcB(Ic_f_list, f_list, nHole_list, 'figno', figno1, 'titlestring', titlestring, 'ylims', ylims);
 
 % Maximum Ic(B)
-[fig2, ax2] = plot_IcB_max(Ic_f_max, f_list, figno2, titlestring, xlims, ylims);
+[fig2, ax2] = plot_IcB_max(Ic_f_max, f_list, 'figno', figno2, 'titlestring', titlestring, 'ylims', ylims);
 
 % Saving figures
 if SAVE_FIGURES

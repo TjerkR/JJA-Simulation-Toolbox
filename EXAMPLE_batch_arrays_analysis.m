@@ -25,7 +25,7 @@ for i = 1:length(files)
     df(i) = abs(f_list(end) - f_list(1))/(length(f_list)-1);
     
     % Plot Ic_max(B) for each array
-    plot_IcB_max(Ic_f_max, f_list, i, strrep(files{1}, "_", "\_"))
+    plot_IcB_max(Ic_f_max, f_list, 'figno', i, 'titlestring', strrep(files{1}, "_", "\_"))
     
     % Print number of peaks for each array
     disp(num_peaks(Ic_f_max))
@@ -44,8 +44,8 @@ SAVE_FIGURES = true;
 ERRORBARS = true;
 filestring = "f_average (L+2)a8-13h square";
 titlestring = "f_{average} between peaks for different hole sizes, N = L+2";
-xlims = "auto";
-ylims = "auto";
+xlims = 'auto';
+ylims = 'auto';
 figno = 111; % use high number to prevent overwriting
 
 figure(figno)
@@ -66,9 +66,5 @@ ax.XTickMode = 'manual';
 ax.XLimMode = 'manual';
 box on
 
-if class(xlims) == "double"
-    xlim(xlims)
-end
-if class(ylims) == "double"
-    ylim(ylims)
-end
+xlim(xlims)
+ylim(ylims)

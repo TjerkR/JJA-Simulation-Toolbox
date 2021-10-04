@@ -1,38 +1,39 @@
-function [fig, ax] = plot_IcB(Ic_f_list, f_list, nHole_list, figno, titlestring, xlims, ylims)
+function [fig, ax] = plot_IcB(Ic_f_list, f_list, nHole_list, NameValueArgs)
 %UNTITLED Summary of this function goes here
-%   TODO: Also plot IcB_max
+%
+arguments
+    Ic_f_list double
+    f_list (1,:) double
+    nHole_list (1,:) double
+    NameValueArgs.figno = ""
+    NameValueArgs.titlestring = ""
+    NameValueArgs.xlims = 'auto'
+    NameValueArgs.ylims = 'auto'
+end
 
-figure(figno)
+titlestring = NameValueArgs.titlestring;
+xlims = NameValueArgs.xlims;
+ylims = NameValueArgs.ylims;
+
+if class(NameValueArgs.figno) == "string"
+    fig = figure;
+else
+    fig = figure(NameValueArgs.figno);
+end
 clf
 
 for i = 1:size(Ic_f_list, 1)
-%     figure(figno);
     hold on
     plot(f_list, Ic_f_list(i, :), '.')
 end
 
-fig = figure(figno);
 legend(strcat({'v = '}, string(num2cell(nHole_list))))
 xlabel('f')
 ylabel('I_c')
 
-try
-    if ~strcmp(titlestring, "none")
-        title(titlestring)
-    end
-end
-
-try
-    if class(xlims) == "double"
-        xlim(xlims)
-    end
-end
-
-try
-    if class(ylims) == "double"
-        ylim(ylims)
-    end
-end
+title(titlestring)
+xlim(xlims)
+ylim(ylims)
 
 legend('boxoff')
 legend('FontSize', 6)
@@ -41,8 +42,6 @@ ax = gca;
 ax.XTickMode = 'manual';
 ax.XLimMode = 'manual';
 box on
-
-% exportgraphics(ax, 'Title.png', 'Resolution', 400)
 
 end
 
