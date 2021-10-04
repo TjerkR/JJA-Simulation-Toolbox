@@ -6,16 +6,15 @@
 close all
 clearvars
 
-SAVE = false;
-PLOT = true;
-
-savedir = '.\';
-figno1 = 10;
-figno2 = 20;
-
+PLOT_DATA = true;
+SAVE_FIGURES = true;
+SAVE_DATA = true;
 titlestring = "I_c of a 10 by 10 array, with an 8 by 8 hole";
+filestring = "10a8h";
 xlims = "auto";
 ylims = [0, 0.25];
+figno1 = 10;
+figno2 = 20;
 
 %% Add current folder to path, start parallel pool
 p = genpath(pwd);
@@ -93,16 +92,30 @@ Ic_f_max = max(Ic_f_list);
 
 toc
 
-%% Saving data
+%% Plotting
 
-if SAVE
-    filename = strcat(string(N),'a',string(L),'h');
-    save(strcat(savedir, filename), 'Ic_f_max', 'Ic_f_list', 'f_list', 'nHole_list');   
+if PLOT_DATA
+    % All curves
+    [fig1, ax1] = plot_IcB(Ic_f_list, f_list, nHole_list, figno1, titlestring, xlims, ylims);
+    
+    % Maximum Ic(B)
+    [fig2, ax2] = plot_IcB_max(Ic_f_max, f_list, figno2, titlestring, xlims, ylims);
+    
+    % Saving figures
+    if SAVE_FIGURES
+        if not(isfolder(".\figures\"))
+            mkdir(".\figures\")
+        end
+        exportgraphics(ax1, strcat(".\figures\", filestring, "_all.png"), "Resolution", 400)
+        exportgraphics(ax2, strcat(".\figures\", filestring, "_max.png"), "Resolution", 400)
+    end
 end
 
-%% Plotting data
+%% Saving data
 
-if PLOT
-    plot_IcB(Ic_f_list, f_list, nHole_list, figno1, titlestring, xlims, ylims);
-    plot_IcB_max(Ic_f_max, f_list, figno2, titlestring, xlims, ylims);
+if SAVE_DATA
+    if not(isfolder(".\data\"))
+        mkdir(".\data\")
+    end
+    save(strcat(".\data\", filestring), 'Ic_f_max', 'Ic_f_list', 'f_list', 'nHole_list');
 end
