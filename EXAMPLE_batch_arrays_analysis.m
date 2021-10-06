@@ -25,7 +25,7 @@ for i = 1:length(files)
     df(i) = abs(f_list(end) - f_list(1))/(length(f_list)-1);
     
     % Plot Ic_max(B) for each array
-    plot_IcB_max(Ic_f_max, f_list, 'figno', i, 'titlestring', strrep(files{1}, "_", "\_"))
+    plot_IcB_max(Ic_f_max, f_list, 'figno', i, 'titlestring', strrep(files{i}, "_", "\_"))
     
     % Print number of peaks for each array
     disp(num_peaks(Ic_f_max))
