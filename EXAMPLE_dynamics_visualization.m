@@ -2,15 +2,15 @@
 % Tjerk Reintsema
 % 29-09-2021
 % 
-% Visualization of vortex dynamics and phases in a 10x10 array with a 2x2
-% hole.
+% Visualization of vortex dynamics and phases in a disordered 34x34 array
+% with a 30x30 hole.
 close all
 clearvars
 
 %% Inputs
 
-N = 10;
-L = 2;
+N = 34;
+L = 30;
 
 % Choose square, circle or diamond
 hole_shape = 'square';
@@ -28,10 +28,9 @@ t = (0:0.1:100)'; % INPUT
 T = 0; % INPUT
 IExt = 0.8; % INPUT
 
-Ic = 1;
-% Nj = 2*N*(N-1);
-% variation = 0.1 * (rand(Nj,1)-0.5);
-% % Ic = 1*(ones(Nj,1) + variation);
+% Ic = 1;
+Nj = 2*N*(N-1);
+Ic = sqrt(0.05) * randn(Nj,1) + 1;
 
 
 %% Creating array
