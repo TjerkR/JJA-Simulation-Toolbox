@@ -1,15 +1,17 @@
 %% Example - Plot average distance between peaks for batch of arrays
 % Tjerk Reintsema
-% 18-10-2021
+% 20-10-2021
 %
 % Plots and optionally saves the average distance between peaks as a
 % function of Ic variance.
 % (Taken from batch_arrays_analysis_149285)
+% (Added features from *_149583)
 close all
 clearvars
 
 SAVE_ARRAY_PLOTS = true;
 SAVE_OVERVIEW_PLOT = true;
+SHOW_VISUALIZATIONS = true;
 ERRORBARS = true;
 
 folder = '.\data\';
@@ -21,8 +23,12 @@ files = natsort(files);
 
 variances = variances(1:length(files));
 
+L = 20;
+
 %% Calculation f_average between peaks
 
+Ic_array = cell(length(files),1);
+zeropeak_locs = zeros(length(files),1);
 Ic_max = zeros(length(files),1);
 f_average = zeros(length(files),1);
 df = zeros(length(files),1);
@@ -45,31 +51,25 @@ for i = 1:length(files)
         exportgraphics(ax2, strcat(".\figures\", array_title, "_max.png"), "Resolution", 400)
     end
     
-    % Print number of peaks for each array
-%     disp(num_peaks(Ic_f_max))
+    % Show visualization of critical currents
+    if SHOW_VISUALIZATIONS
+        Ic_array{i} = visualize_Ic(Ics(:,i), 'L', L, 'figno', 200+i, 'titlestring', strrep(array_title, "_", "\_"));
+    end
     
     % Find peaks and calculate f_average
-    % OPTION 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Just find all peaks %%%%%%%%%%%%%%%%%%%%%%%%%%
-%     [peaks, locs] = findpeaks(Ic_f_max, 'MinPeakHeight', max(Ic_f_max)/4);
-%     for loc = locs
-%         xline(f_list(loc))
-%     end
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    % OPTION 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Try to get only "normal" peaks%%%%%%%%%%%%%%%%
-    location = ceil(16/30* length(Ic_f_max));
-    [peaks, locs] = findpeaks(Ic_f_max(location:end), 'MinPeakHeight', max(Ic_f_max)/4);
+    [peaks, locs] = findpeaks(Ic_f_max, 'MinPeakHeight', max(Ic_f_max)/4);
     for loc = locs
-        xline(f_list(location+loc))
+        xline(f_list(loc))
     end
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     first_f = f_list(locs(1));
     last_f = f_list(locs(end));
 
     f_average(i) = abs(last_f - first_f) / numel(peaks);
     disp(numel(peaks))
+    
+    zeropeak_locs(i) = f_list(locs(ceil(length(nHole_list)/2)));
+    
     Ic_max(i) = max(Ic_f_max);
 end
 
@@ -77,7 +77,7 @@ end
 
 %% Plotting
 
-filestring = "f_average 34a30h square disordered";
+filestring = "f_average 28a20h square disordered";
 titlestring = "f_{average} between peaks for different Ic disorder variances";
 xlims = 'auto';
 ylims = 'auto';
@@ -110,3 +110,21 @@ if SAVE_OVERVIEW_PLOT
     end
     exportgraphics(ax, strcat(".\figures\", filestring, ".png"), "Resolution", 400)
 end
+
+
+%% BONUS PLOTS
+
+% Ic_max(variance)
+figure()
+plot(variances, Ic_max, '.', 'MarkerSize', 15)
+title("Maximum critical current as a function of array Ic variance")
+xlabel("I_c variance")
+ylabel("maximum I_c")
+
+
+% zeropeak_offset(variance)figure()
+figure()
+plot(variances, zeropeak_locs, '.', 'MarkerSize', 15)
+title("Zero peak offset as a function of array Ic variance")
+xlabel("I_c variance")
+ylabel("zero peak offset")
