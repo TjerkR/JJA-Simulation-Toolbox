@@ -1,5 +1,5 @@
-function array = Ic_list_to_array(list, L)
-Nj = length(list);
+function array = Ic_list_to_array(Ic, L)
+Nj = length(Ic);
 N = 0.5 * (sqrt(2*Nj+1) + 1);
 
 rows = N*2-1;
@@ -11,9 +11,9 @@ working_array = ones(rows, cols);
 for i = 1:rows
     for j = 1:cols
         if mod(i,2) ~= 0 && j == 1
-            index_array(i,j) = 0;
+            index_array(i,j) = 0; % array(i,j) = list(0)
         elseif i == 1
-            index_array(i,j) = 2*(j-1) - 1;
+            index_array(i,j) = 2*(j-1) - 1; % array(i,j) = list(2*(j-1)-1)
         elseif i == 2 && j ~= cols
             index_array(i,j) = 2*j;
         elseif i == 2 && j == cols
@@ -36,7 +36,7 @@ for i = 1:rows
         if index_array(i,j) == 0
             working_array(i,j) = 0;
         else
-            working_array(i,j) = list(index_array(i,j));
+            working_array(i,j) = Ic(index_array(i,j));
         end
     end
 end
