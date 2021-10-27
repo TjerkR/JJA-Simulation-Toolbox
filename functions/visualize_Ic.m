@@ -9,7 +9,8 @@ L = NameValueArgs.L;
 figno = NameValueArgs.figno;
 titlestring = NameValueArgs.titlestring;
 
-array = Ic_list_to_array(Ic, L);
+
+array = flipud(Ic_list_to_array(Ic, L)); % flip or not??
 array = [array array(:,end)];
 array = [array; array(end,:)];
 
