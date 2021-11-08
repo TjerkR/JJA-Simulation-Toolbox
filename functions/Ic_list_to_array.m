@@ -41,12 +41,12 @@ for i = 1:rows
     end
 end
 
-% removing hole
+% removing hole attempt
 if L > 0
     hole_edge = (N-L)/2+1;
-    working_array((hole_edge+0):(rows+1-hole_edge), hole_edge:(cols+1-hole_edge)) = 0;
+    working_array((hole_edge*2-2):(rows+3-hole_edge*2), hole_edge:(cols+1-hole_edge)) = 0;
     for i = 1:rows
-        if mod(i,2) ~= 0 && i < (rows+1-hole_edge) && i > hole_edge
+        if mod(i,2) ~= 0 && i < (rows+3-hole_edge*2) && i > (hole_edge*2-2)
             working_array(i, cols+2-hole_edge) = 0;
         end
     end
