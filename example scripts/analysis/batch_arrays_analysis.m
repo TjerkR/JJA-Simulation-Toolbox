@@ -1,21 +1,35 @@
 %% Plot average distance between peaks for batch of arrays
 % Tjerk Reintsema
-% 15-11-2021
+% 19-11-2021
 %
 % Analysis script for Ic(B) data for a batch of different arrays.
 % Functionality includes plotting individual and maximum Ic(B) curves for
 % each array, showing the distribution of the critical currents for each
 % array and plotting the average distance between peaks, maximum critical
-% current and offset as a function of an array parameter.
+% current, offset and first and last peak critical currents as a function 
+% of an array parameter.
 % -> adapted from:
-% "\[2021-11-05] [!!!] ...\batch_arrays_analysis_newscript" on 15-11-2021
+% "\[2021-11-05] 28a20h 0fracN...\" on 19-11-2021
 close all
 clearvars
 
 %% INPUT / OPTIONS
 
+%%%% OPTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+xlabel_string = "I_c imbalance divide position";
+xvariable_titlestring = "array I_c imbalance divide position";
+array_filename_description = "28a20h_fracN_al_lohi_varin0p001"; 
+
+fracNs = 0:1:28;
+x = fracNs; 
+L = 20;
+
+figuresfolder = '.\figures\';
+visualizationsfolder = '.\visualizations\';
+datafolder = '.\data\';
+
 %%%% PLOTTING / SAVING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-SHOW_ALL = true;
+SHOW_ALL = false;
 SAVE_ALL = false;
 
 % Array plots
@@ -37,18 +51,8 @@ SAVE_IC_MAX = SAVE_ALL;
 SHOW_OFFSET = SHOW_ALL;
 SAVE_OFFSET = SAVE_ALL;
 
-%%%% OTHER OPTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-xlabel_string = "I_c imbalance divide position";
-xvariable_titlestring = "array I_c imbalance divide position";
-array_filename_description = "28a20h_imbalanced_al_lohi"; 
-
-fracNs = 0:1:28; 
-x = fracNs; 
-L = 20;
-
-figuresfolder = '.\figures 2\';
-visualizationsfolder = '.\visualizations 2\';
-datafolder = '.\data\';
+SHOW_FIRSTLAST = SHOW_ALL;
+SAVE_FIRSTLAST = SAVE_ALL;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Loading files
@@ -64,6 +68,8 @@ zeropeak_locs = zeros(length(files),1);
 Ic_max = zeros(length(files),1);
 f_average = zeros(length(files),1);
 df = zeros(length(files),1);
+firstpeak_Ics = zeros(length(files),1);
+lastpeak_Ics = zeros(length(files),1);
 for i = 1:length(files)
     load(fullfile(datafolder, files{i}))
     disp(x(i))
@@ -106,8 +112,10 @@ for i = 1:length(files)
         
     % Find peaks and calculate f_average
     [peaks, locs] = findpeaks(Ic_f_max, 'MinPeakHeight', max(Ic_f_max)/4);
-    for loc = locs
-        xline(f_list(loc))
+    if SHOW_ARRAY_PLOTS
+        for loc = locs
+            xline(f_list(loc))
+        end
     end
     
     if ~isempty(locs)
@@ -118,8 +126,21 @@ for i = 1:length(files)
         fprintf('peaks: %.0f\n\n\n', numel(peaks))
 
         zeropeak_locs(i) = f_list(locs(ceil(length(nHole_list)/2)));
+        
+        firstpeak_Ics(i) = Ic_f_max(locs(1));
+        lastpeak_Ics(i) = Ic_f_max(locs(end));
+    elseif length(locs) == 1
+        if f_list(locs(1)) > 0
+            firstpeak_Ics(i) = Ic_f_max(locs(1));
+            lastpeak_Ics(i) = NaN;
+        else
+            firstpeak_Ics(i) = NaN;
+            lastpeak_Ics(i) = Ic_f_max(locs(1));
+        end
     else
         fprintf('peaks: %.0f\n\n\n', 0)
+        firstpeak_Ics(i) = NaN;
+        lastpeak_Ics(i) = NaN;
         zeropeak_locs(i) = NaN;
     end
     
@@ -198,3 +219,22 @@ if SHOW_OFFSET
     end
 end
 
+%% Plot 4: First-last peak
+
+if SHOW_FIRSTLAST
+    figure(4004)
+    hold on
+    plot(x, firstpeak_Ics, '.-')
+    plot(x, lastpeak_Ics, '.-')
+    title(strcat("I_c of first and last peaks as a function of ", xvariable_titlestring))
+    xlabel(xlabel_string)
+    ylabel("I_c of first and last peak")
+    legend(["first peak", "last peak"], 'Location', 'Best')
+    if SAVE_FIRSTLAST
+        ax = gca;
+        if not(isfolder(figuresfolder))
+            mkdir(figuresfolder)
+        end
+        exportgraphics(ax, strcat(figuresfolder, "tilt_", array_filename_description, ".png"), "Resolution", 400)
+    end
+end
