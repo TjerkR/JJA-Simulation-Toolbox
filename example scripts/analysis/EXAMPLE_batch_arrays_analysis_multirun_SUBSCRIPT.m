@@ -1,6 +1,6 @@
 %% Analysis script for batch of arrays - sub script
 % Tjerk Reintsema
-% 23-11-2021
+% 26-11-2021
 %
 % THIS SCRIPT SHOULD *NOT* BE RAN ON ITS OWN, INSTEAD USE THE MAIN SCRIPT.
 %
@@ -19,7 +19,7 @@
 
 %% Loading files
 
-if TAKE_AVERAGE
+if TAKE_AVERAGE || runs == 1
     filestruct = dir(fullfile(datafolder, '*.mat'));
 else
     filestruct = dir(fullfile(datafolder, strcat("*_run",string(run),".mat")));
@@ -41,7 +41,7 @@ df = zeros(length(files),1);
 firstpeak_Ics = zeros(length(files),1);
 lastpeak_Ics = zeros(length(files),1);
 for n = 1:length(files)
-    if TAKE_AVERAGE
+    if TAKE_AVERAGE || runs == 1
         i = ceil(n/runs);
         run = mod(n-1, runs) + 1;
     else
@@ -226,23 +226,24 @@ if SHOW_OFFSET
     end
 end
 
-%% Plot 4: First-last peak
+%% Plot 4: Tilt
 
 if SHOW_FIRSTLAST
     figure(4004)
     clf
     hold on
-    plot(x, firstpeak_Ics, '.-')
-    plot(x, lastpeak_Ics, '.-')
-    title(strcat("I_c of first and last peaks as a function of ", xvariable_titlestring))
+    plot(x, firstpeak_Ics-mean([firstpeak_Ics, lastpeak_Ics], 2), '.-')
+    plot(x, lastpeak_Ics-mean([firstpeak_Ics, lastpeak_Ics], 2), '.-')
+    title("Relative I_c of first and last peaks")
+    % title(strcat("Relative I_c of first and last peaks as a function of ", xvariable_titlestring))
     xlabel(xlabel_string)
-    ylabel("I_c of first and last peak")
+    ylabel("I_c (average of both peaks subtracted)")
     legend(["first peak", "last peak"], 'Location', 'Best')
     if SAVE_FIRSTLAST
         ax = gca;
         if not(isfolder(figuresfolder))
             mkdir(figuresfolder)
         end
-        exportgraphics(ax, strcat(figuresfolder, "tilt_", array_filename_description, ".png"), "Resolution", 400)
+        exportgraphics(ax, strcat(figuresfolder, "tilt_rel_", array_filename_description, ".png"), "Resolution", 400)
     end
 end

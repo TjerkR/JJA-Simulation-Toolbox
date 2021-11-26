@@ -1,6 +1,6 @@
 %% Analysis script for batch of arrays - main script
 % Tjerk Reintsema
-% 23-11-2021
+% 26-11-2021
 %
 % THIS IS THE MAIN SCRIPT THAT NEEDS TE BE RAN.
 %
@@ -14,27 +14,27 @@
 %
 % -> adapted from:
 % "\[2021-11-18] 28a20h ... multiple runs\" on 22-11-2021
-close all
+% close all
 clearvars
 
 %% INPUT / OPTIONS
 
 %%%% OPTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-xlabel_string = "l_{disorder}";
-xvariable_titlestring = "array I_c disorder length scale";
-array_filename_description = "28a20h_l_disorder_var0p10_varin0p001_20runsaveraged"; 
+xlabel_string = "I_c imbalance divide position";
+xvariable_titlestring = "array I_c imbalance divide position";
+array_filename_description = "28a20h_fracN_al_lohi_nodisorder"; 
 
-l_disorders = 0:1:28;
-x = l_disorders; 
+fracNs = 0:1:28;
+x = fracNs; 
 L = 20;
 
-figuresfolder = '.\figures\';
-visualizationsfolder = '.\visualizations\';
-datafolder = '.\data\';
+figuresfolder = '.\figures EWI\';
+visualizationsfolder = '.\visualizations EWI\';
+datafolder = '.\data EWI\';
 
-runs = 4;
-TAKE_AVERAGE = true;
-run = 1;
+runs = 1; % always needs to be set!
+TAKE_AVERAGE = false;
+run = 0;
 
 %%%% PLOTTING / SAVING / PRINTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 SHOW_ALL = true;
