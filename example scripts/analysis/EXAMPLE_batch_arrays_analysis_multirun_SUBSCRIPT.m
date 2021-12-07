@@ -148,7 +148,7 @@ if TAKE_AVERAGE
     f_average = mean(reshape(f_average,runs,[]),1)';
     df = mean(reshape(df,runs,[]),1)' / sqrt(runs);
     Ic_max = mean(reshape(Ic_max,runs,[]),1)';
-    zeropeak_locs = mean(reshape(zeropeak_locs,runs,[]),1)';
+    zeropeak_locs = mean(reshape(abs(zeropeak_locs),runs,[]),1)'; % taking absolute value now
     firstpeak_Ics = mean(reshape(firstpeak_Ics,runs,[]),1)';
     lastpeak_Ics = mean(reshape(lastpeak_Ics,runs,[]),1)';
 end
@@ -216,13 +216,13 @@ if SHOW_OFFSET
     plot(x, zeropeak_locs, '.', 'MarkerSize', 15)
     title(strcat("Zero peak offset as a function of ", xvariable_titlestring))
     xlabel(xlabel_string)
-    ylabel("zero peak offset")
+    ylabel("zero peak offset (absolute)")
     if SAVE_OFFSET
         ax = gca;
         if not(isfolder(figuresfolder))
             mkdir(figuresfolder)
         end
-        exportgraphics(ax, strcat(figuresfolder, "offset_", array_filename_description, ".png"), "Resolution", 400)
+        exportgraphics(ax, strcat(figuresfolder, "offset_abs_", array_filename_description, ".png"), "Resolution", 400)
     end
 end
 
