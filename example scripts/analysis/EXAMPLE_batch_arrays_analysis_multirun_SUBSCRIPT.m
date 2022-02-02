@@ -99,7 +99,7 @@ for n = 1:length(files)
         end
     end
     
-    if ~isempty(locs)
+    if length(locs) > 1
         first_f = f_list(locs(1));
         last_f = f_list(locs(end));
 
